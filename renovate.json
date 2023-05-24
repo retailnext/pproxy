@@ -6,6 +6,9 @@
   "constraints": {
     "python": "~=3.9.2"
   },
+  "ignorePaths": [
+    "(^|/)requirements\\.txt$"
+  ],
   "pip-compile": {
     "fileMatch": [
       "(^|/)requirements\\.in$"
