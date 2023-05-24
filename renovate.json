@@ -1,0 +1,15 @@
+{
+  "extends": [
+    "config:base"
+  ],
+  "automerge": true,
+  "constraints": {
+    "python": "~=3.9.2"
+  },
+  "pip-compile": {
+    "fileMatch": [
+      "(^|/)requirements\\.in$"
+    ]
+  },
+  "platformAutomerge": true
+}
