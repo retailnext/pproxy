@@ -45,4 +45,4 @@ jobs:
         with:
           context: .
           load: true
-          tags: ${{ fromJSON(steps.validate.outputs.tags) }}
+          tags: ${{ steps.validate.outputs.tags }}
