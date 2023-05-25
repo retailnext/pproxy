@@ -27,7 +27,7 @@ pylsqpack==0.3.17
     # via aioquic
 pyopenssl==23.1.1
     # via aioquic
-typing-extensions==4.6.0
+typing-extensions==4.6.1
     # via asyncssh
 uvloop==0.17.0
     # via pproxy
