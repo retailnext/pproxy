@@ -36,7 +36,6 @@ jobs:
           load: true
           tags: ${{ env.TEST_TAG }}
           cache-from: type=gha
-          cache-to: type=gha,mode=max
       - name: Validate Container
         id: validate
         run: |
