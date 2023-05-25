@@ -44,5 +44,6 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          load: true
-          tags: ${{ fromJSON(steps.validate.outputs.tags) }}
+          platforms: linux/amd64,linux/arm64
+          push: ${{ github.ref == 'refs/heads/main' }}
+          tags: ${{ steps.validate.outputs.tags }}
