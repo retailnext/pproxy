@@ -6,13 +6,16 @@
   "constraints": {
     "python": "~=3.9.2"
   },
-  "ignorePaths": [
-    "(^|/)requirements\\.txt$"
-  ],
+  "lockFileMaintenance": {
+    "enabled": true
+  },
   "pip-compile": {
     "fileMatch": [
       "(^|/)requirements\\.in$"
     ]
+  },
+  "pip_requirements": {
+    "enabled": false
   },
   "platformAutomerge": true
 }

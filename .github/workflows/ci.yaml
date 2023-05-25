@@ -35,11 +35,12 @@ jobs:
           context: .
           load: true
           tags: ${{ env.TEST_TAG }}
+          cache-from: type=gha
       - name: Validate Container
         id: validate
         run: |
-          docker run --rm --entrypoint python ${{ env.TEST_TAG }} < ci/validate.py
-          docker run --rm --env=IMAGE --entrypoint python ${{ env.TEST_TAG }} >> "$GITHUB_OUTPUT" < ci/generate_tags.py
+          docker run --rm -i --entrypoint python ${{ env.TEST_TAG }} < ci/validate.py
+          docker run --rm -i --env=IMAGE --entrypoint python ${{ env.TEST_TAG }} >> "$GITHUB_OUTPUT" < ci/generate_tags.py
       - name: Build images
         uses: docker/build-push-action@v4
         with:
@@ -47,3 +48,5 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: ${{ github.ref == 'refs/heads/main' }}
           tags: ${{ steps.validate.outputs.tags }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
