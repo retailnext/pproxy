@@ -15,4 +15,4 @@ if not cryptography.hazmat.backends.openssl.backend:
     sys.exit('cryptography is not okay')
 
 # Check that pproxy can be started
-subprocess.check_call(["/venv/bin/pproxy", "--version"])
+subprocess.check_call(["/usr/local/bin/pproxy", "--version"])
