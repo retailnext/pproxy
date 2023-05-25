@@ -38,8 +38,8 @@ jobs:
       - name: Validate Container
         id: validate
         run: |
-          docker run --rm --entrypoint python ${{ env.TEST_TAG }} < ci/validate.py
-          docker run --rm --env=IMAGE --entrypoint python ${{ env.TEST_TAG }} >> "$GITHUB_OUTPUT" < ci/generate_tags.py
+          docker run --rm -i --entrypoint python ${{ env.TEST_TAG }} < ci/validate.py
+          docker run --rm -i --env=IMAGE --entrypoint python ${{ env.TEST_TAG }} >> "$GITHUB_OUTPUT" < ci/generate_tags.py
       - name: Build images
         uses: docker/build-push-action@v4
         with:
