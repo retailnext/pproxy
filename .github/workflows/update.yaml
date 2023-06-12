@@ -1,0 +1,68 @@
+---
+name: Update
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+permissions:
+  contents: write
+  pull-requests: write
+env:
+  IMAGE: "ghcr.io/${{ github.repository }}"
+jobs:
+  update:
+    name: Update
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Update requirements
+        id: update
+        run: |
+          docker create --name=pip-compile \
+          --entrypoint /bin/sh \
+          --interactive \
+          --user root \
+          --workdir /tmp \
+          $IMAGE
+          
+          docker cp requirements.in pip-compile:/tmp/
+          
+          docker start --attach --interactive pip-compile < ci/pip-compile.sh
+          
+          docker cp pip-compile:/tmp/requirements.txt .
+          
+          docker rm -f pip-compile
+          
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "changes=Y" >> "$GITHUB_OUTPUT";
+          else
+            echo "changes=N" >> "$GITHUB_OUTPUT";
+          fi
+      - name: Generate Token
+        id: generate-token
+        uses: tibdex/github-app-token@v1
+        if: ${{ steps.update.output.changes == 'Y' }}
+        with:
+          app_id: ${{ secrets.APP_ID }}
+          private_key: ${{ secrets.APP_PRIVATE_KEY }}
+      - name: Create Pull Request
+        id: create-pull-request
+        uses: peter-evans/create-pull-request@v5
+        if: ${{ steps.update.output.changes == 'Y' }}
+        with:
+          token: ${{ steps.generate-token.outputs.token }}
+          add-paths: |
+            requirements.txt
+          base: main
+          branch: update/requirements
+          delete-branch: true
+          branch-suffix: short-commit-hash
+          commit-message: |
+            chore(deps): Update requirements.txt
+          signoff: true
+          labels: |
+            dependencies
+      - name: Enable Auto-Merge
+        if: ${{ steps.update.output.changes == 'Y' && steps.create-pull-request.outputs.pull-request-number }}
+        run: |
+          gh pr merge --auto --squash "${{ steps.create-pull-request.outputs.pull-request-number }}"
