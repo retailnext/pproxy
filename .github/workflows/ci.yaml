@@ -10,6 +10,7 @@ on:
 env:
   IMAGE: "ghcr.io/${{ github.repository }}"
   PLATFORMS: "linux/amd64,linux/arm64"
+  REGISTRY: "ghcr.io"
   TEST_TAG: "ghcr.io/${{ github.repository }}:test"
 jobs:
   docker:
