@@ -35,14 +35,9 @@ jobs:
           docker cp pip-compile:/tmp/requirements.txt .
           
           docker rm -f pip-compile
-          
-          echo "git diff:"
-          git diff
-          echo "---"
-          
+
           if [ -n "$(git status --porcelain)" ]; then
-            echo "changes=Y\n" >> "$GITHUB_OUTPUT"
-            echo "changes=Y\n"
+            echo "changes=true\n" >> "$GITHUB_OUTPUT"
           fi
       - name: Debug outputs
         run: |
@@ -55,14 +50,14 @@ jobs:
       - name: Generate Token
         id: generate-token
         uses: tibdex/github-app-token@v1
-        if: ${{ steps.update.outputs.changes == 'Y' }}
+        if: ${{ steps.update.outputs.changes }}
         with:
           app_id: ${{ secrets.APP_ID }}
           private_key: ${{ secrets.APP_PRIVATE_KEY }}
       - name: Create Pull Request
         id: create-pull-request
         uses: peter-evans/create-pull-request@v5
-        if: ${{ steps.update.output.changes == 'Y' }}
+        if: ${{ steps.update.outputs.changes }}
         with:
           token: ${{ steps.generate-token.outputs.token }}
           add-paths: |
@@ -77,6 +72,6 @@ jobs:
           labels: |
             dependencies
       - name: Enable Auto-Merge
-        if: ${{ steps.update.output.changes == 'Y' && steps.create-pull-request.outputs.pull-request-number }}
+        if: ${{ steps.create-pull-request.outputs.pull-request-number }}
         run: |
           gh pr merge --auto --squash "${{ steps.create-pull-request.outputs.pull-request-number }}"
