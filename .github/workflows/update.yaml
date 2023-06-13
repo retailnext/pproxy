@@ -32,46 +32,68 @@ jobs:
           
           docker start --attach --interactive pip-compile < ci/pip-compile.sh
           
+          mv requirements.txt requirements.txt.orig
           docker cp pip-compile:/tmp/requirements.txt .
           
           docker rm -f pip-compile
 
-          if [ -n "$(git status --porcelain)" ]; then
-            echo "changes=true\n" >> "$GITHUB_OUTPUT"
+          if [ -n "$(git status --porcelain requirements.txt)" ]; then
+            docker create --name=generate-message \
+            --entrypoint python \
+            --interactive \
+            --workdir /tmp \
+            $IMAGE
+          
+            docker cp requirements.txt.orig generate-message:/tmp/
+            docker cp requirements.txt generate-message:/tmp/
+          
+            EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+            echo "commit-message<<$EOF" >> "$GITHUB_OUTPUT"
+            docker start --attach --interactive generate-message < ci/generate_message.py >> "$GITHUB_OUTPUT"
+            echo "$EOF" >> "$GITHUB_OUTPUT"
+          
+            docker rm -f generate-message
           fi
       - name: Debug outputs
         run: |
-          echo "changes?: ${{ steps.update.outputs.changes }}"
-          echo "output: ${{ steps.update.outputs }}"
+          echo "changes?: ${{ steps.update.outputs.commit-message }}"
       - name: "Would run?"
-        if: ${{ steps.update.outputs.changes }}
+        if: ${{ steps.update.outputs.commit-message }}
         run: |
           echo "Would have done the thing..."
       - name: Generate Token
         id: generate-token
         uses: tibdex/github-app-token@v1
-        if: ${{ steps.update.outputs.changes }}
+        if: ${{ steps.update.outputs.commit-message }}
         with:
           app_id: ${{ secrets.APP_ID }}
           private_key: ${{ secrets.APP_PRIVATE_KEY }}
       - name: Create Pull Request
         id: create-pull-request
         uses: peter-evans/create-pull-request@v5
-        if: ${{ steps.update.outputs.changes }}
+        if: ${{ steps.update.outputs.commit-message }}
         with:
           token: ${{ steps.generate-token.outputs.token }}
           add-paths: |
             requirements.txt
           base: main
+          author: "update-pproxy[bot] <136385368+update-pproxy[bot]@users.noreply.github.com>"
+          committer: "update-pproxy[bot] <136385368+update-pproxy[bot]@users.noreply.github.com>"
           branch: update/requirements
           delete-branch: true
           branch-suffix: short-commit-hash
+          body: ""
           commit-message: |
-            chore(deps): Update requirements.txt
+            chore(deps): Update Python Packages
+            
+            ${{ steps.update.outputs.commit-message }}
           signoff: true
+          title: "chore(deps): Update Python Packages"
           labels: |
             dependencies
       - name: Enable Auto-Merge
         if: ${{ steps.create-pull-request.outputs.pull-request-number }}
+        env:
+          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
         run: |
           gh pr merge --auto --squash "${{ steps.create-pull-request.outputs.pull-request-number }}"
