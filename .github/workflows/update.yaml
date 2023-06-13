@@ -1,6 +1,9 @@
 ---
 name: Update
 on:
+  pull_request:
+    branches:
+      - main
   schedule:
     - cron: '*/30 * * * *'
 permissions:
@@ -33,11 +36,21 @@ jobs:
           
           docker rm -f pip-compile
           
+          echo "git diff:"
+          git diff
+          echo "---"
+          
           if [ -n "$(git status --porcelain)" ]; then
-            echo "changes=Y" >> "$GITHUB_OUTPUT";
+            echo "changes=Y" >> "$GITHUB_OUTPUT"
+            echo "changes=Y"
           else
-            echo "changes=N" >> "$GITHUB_OUTPUT";
+            echo "changes=N" >> "$GITHUB_OUTPUT"
+            echo "changes=N"
           fi
+      - name: Debug outputs
+        run: |
+          echo "changes?: ${{ steps.update.output.changes }}"
+          echo "output: ${{ steps.update.output }}"
       - name: Generate Token
         id: generate-token
         uses: tibdex/github-app-token@v1
