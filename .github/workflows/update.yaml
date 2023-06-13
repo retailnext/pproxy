@@ -45,6 +45,7 @@ jobs:
             $IMAGE
           
             docker cp requirements.txt.orig generate-message:/tmp/
+            rm requirements.txt.orig
             docker cp requirements.txt generate-message:/tmp/
           
             EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
@@ -80,9 +81,7 @@ jobs:
           author: "update-pproxy[bot] <136385368+update-pproxy[bot]@users.noreply.github.com>"
           committer: "update-pproxy[bot] <136385368+update-pproxy[bot]@users.noreply.github.com>"
           branch: update/requirements
-          delete-branch: true
-          branch-suffix: short-commit-hash
-          body: ""
+          body: ${{ steps.update.outputs.commit-message}}
           commit-message: |
             chore(deps): Update Python Packages
             
