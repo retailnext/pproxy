@@ -41,11 +41,11 @@ jobs:
           echo "---"
           
           if [ -n "$(git status --porcelain)" ]; then
-            echo "changes=Y" >> "$GITHUB_OUTPUT"
-            echo "changes=Y"
+            echo "changes=Y\n" >> "$GITHUB_OUTPUT"
+            echo "changes=Y\n"
           else
-            echo "changes=N" >> "$GITHUB_OUTPUT"
-            echo "changes=N"
+            echo "changes=N\n" >> "$GITHUB_OUTPUT"
+            echo "changes=N\n"
           fi
       - name: Debug outputs
         run: |
