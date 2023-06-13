@@ -12,6 +12,7 @@ jobs:
   update:
     name: Update
     runs-on: ubuntu-latest
+    environment: Update
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -29,40 +30,78 @@ jobs:
           
           docker start --attach --interactive pip-compile < ci/pip-compile.sh
           
+          mv requirements.txt requirements.txt.orig
           docker cp pip-compile:/tmp/requirements.txt .
           
           docker rm -f pip-compile
           
-          if [ -n "$(git status --porcelain)" ]; then
-            echo "changes=Y" >> "$GITHUB_OUTPUT";
-          else
-            echo "changes=N" >> "$GITHUB_OUTPUT";
+          if [ -n "$(git status --porcelain requirements.txt)" ]; then
+            docker create --name=generate-message \
+            --entrypoint python \
+            --interactive \
+            --workdir /tmp \
+            $IMAGE
+          
+            docker cp requirements.txt.orig generate-message:/tmp/
+            rm requirements.txt.orig
+            docker cp requirements.txt generate-message:/tmp/
+          
+            EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+            echo "commit-message<<$EOF" >> "$GITHUB_OUTPUT"
+            docker start --attach --interactive generate-message < ci/generate_message.py >> "$GITHUB_OUTPUT"
+            echo "$EOF" >> "$GITHUB_OUTPUT"
+          
+            docker rm -f generate-message
           fi
       - name: Generate Token
         id: generate-token
         uses: tibdex/github-app-token@v1
-        if: ${{ steps.update.output.changes == 'Y' }}
+        if: ${{ steps.update.outputs.commit-message }}
         with:
           app_id: ${{ secrets.APP_ID }}
           private_key: ${{ secrets.APP_PRIVATE_KEY }}
       - name: Create Pull Request
         id: create-pull-request
         uses: peter-evans/create-pull-request@v5
-        if: ${{ steps.update.output.changes == 'Y' }}
+        if: ${{ steps.update.outputs.commit-message }}
         with:
           token: ${{ steps.generate-token.outputs.token }}
           add-paths: |
             requirements.txt
           base: main
+          author: "update-pproxy[bot] <136385368+update-pproxy[bot]@users.noreply.github.com>"
+          committer: "update-pproxy[bot] <136385368+update-pproxy[bot]@users.noreply.github.com>"
           branch: update/requirements
-          delete-branch: true
-          branch-suffix: short-commit-hash
+          body: ${{ steps.update.outputs.commit-message}}
           commit-message: |
-            chore(deps): Update requirements.txt
+            chore(deps): Update Python Packages
+            
+            ${{ steps.update.outputs.commit-message }}
           signoff: true
+          title: "chore(deps): Update Python Packages"
           labels: |
             dependencies
       - name: Enable Auto-Merge
-        if: ${{ steps.update.output.changes == 'Y' && steps.create-pull-request.outputs.pull-request-number }}
+        if: ${{ steps.create-pull-request.outputs.pull-request-number }}
+        env:
+          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
         run: |
           gh pr merge --auto --squash "${{ steps.create-pull-request.outputs.pull-request-number }}"
+      - name: Generate Token (Approver)
+        id: generate-approver-token
+        uses: tibdex/github-app-token@v1
+        if: ${{ steps.create-pull-request.outputs.pull-request-number }}
+        with:
+          app_id: ${{ secrets.APPROVER_APP_ID }}
+          private_key: ${{ secrets.APPROVER_APP_PRIVATE_KEY }}
+      - name: Approve Pull Request
+        if: ${{ steps.create-pull-request.outputs.pull-request-number }}
+        run: |
+          curl -L \
+            -sS \
+            -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ steps.generate-approver-token.outputs.token }}"\
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            https://api.github.com/repos/${{ github.repository }}/pulls/${{ steps.create-pull-request.outputs.pull-request-number }}/reviews \
+            -d '{"commit_id":"${{ steps.create-pull-request.outputs.pull-request-head-sha }}","event":"APPROVE"}'
