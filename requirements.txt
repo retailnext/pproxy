@@ -4,7 +4,7 @@
 #
 #    pip-compile requirements.in
 #
-aioquic==0.9.20
+aioquic==0.9.21
     # via pproxy
 asyncssh==2.13.2
     # via pproxy
@@ -14,7 +14,6 @@ cffi==1.15.1
     # via cryptography
 cryptography==41.0.1
     # via
-    #   aioquic
     #   asyncssh
     #   pyopenssl
 pproxy[accelerated,quic,sshtunnel]==2.7.8
