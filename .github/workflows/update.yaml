@@ -55,7 +55,7 @@ jobs:
           fi
       - name: Generate Token
         id: generate-token
-        uses: tibdex/github-app-token@v1
+        uses: tibdex/github-app-token@v2
         if: ${{ steps.update.outputs.commit-message }}
         with:
           app_id: ${{ secrets.APP_ID }}
@@ -89,7 +89,7 @@ jobs:
           gh pr merge --auto --squash "${{ steps.create-pull-request.outputs.pull-request-number }}"
       - name: Generate Token (Approver)
         id: generate-approver-token
-        uses: tibdex/github-app-token@v1
+        uses: tibdex/github-app-token@v2
         if: ${{ steps.create-pull-request.outputs.pull-request-number }}
         with:
           app_id: ${{ secrets.APPROVER_APP_ID }}
