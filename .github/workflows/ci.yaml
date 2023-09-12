@@ -31,7 +31,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build test image
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v5
         with:
           context: .
           load: true
@@ -43,7 +43,7 @@ jobs:
           docker run --rm -i --entrypoint python ${{ env.TEST_TAG }} < ci/validate.py
           docker run --rm -i --env=IMAGE --entrypoint python ${{ env.TEST_TAG }} >> "$GITHUB_OUTPUT" < ci/generate_tags.py
       - name: Build images
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v5
         with:
           context: .
           platforms: linux/amd64,linux/arm64
