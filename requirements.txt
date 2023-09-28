@@ -10,7 +10,7 @@ asyncssh==2.13.2
     # via pproxy
 certifi==2023.7.22
     # via aioquic
-cffi==1.15.1
+cffi==1.16.0
     # via cryptography
 cryptography==41.0.4
     # via
