@@ -6,7 +6,7 @@
 #
 aioquic==0.9.21
     # via pproxy
-asyncssh==2.13.2
+asyncssh==2.14.0
     # via pproxy
 certifi==2023.7.22
     # via aioquic
