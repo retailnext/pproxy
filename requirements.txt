@@ -28,5 +28,5 @@ pyopenssl==23.2.0
     # via aioquic
 typing-extensions==4.8.0
     # via asyncssh
-uvloop==0.17.0
+uvloop==0.18.0
     # via pproxy
