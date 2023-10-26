@@ -24,7 +24,7 @@ pycryptodome==3.19.0
     # via pproxy
 pylsqpack==0.3.17
     # via aioquic
-pyopenssl==23.2.0
+pyopenssl==23.3.0
     # via aioquic
 typing-extensions==4.8.0
     # via asyncssh
