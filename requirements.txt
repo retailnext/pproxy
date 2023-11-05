@@ -4,10 +4,12 @@
 #
 #    pip-compile requirements.in
 #
-aioquic==0.9.21
+aioquic==0.9.22
     # via pproxy
 asyncssh==2.14.0
     # via pproxy
+attrs==23.1.0
+    # via service-identity
 certifi==2023.7.22
     # via aioquic
 cffi==1.16.0
@@ -16,8 +18,15 @@ cryptography==41.0.5
     # via
     #   asyncssh
     #   pyopenssl
+    #   service-identity
 pproxy[accelerated,quic,sshtunnel]==2.7.8
     # via -r requirements.in
+pyasn1==0.5.0
+    # via
+    #   pyasn1-modules
+    #   service-identity
+pyasn1-modules==0.3.0
+    # via service-identity
 pycparser==2.21
     # via cffi
 pycryptodome==3.19.0
@@ -25,6 +34,8 @@ pycryptodome==3.19.0
 pylsqpack==0.3.18
     # via aioquic
 pyopenssl==23.3.0
+    # via aioquic
+service-identity==23.1.0
     # via aioquic
 typing-extensions==4.8.0
     # via asyncssh
