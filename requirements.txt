@@ -4,7 +4,7 @@
 #
 #    pip-compile requirements.in
 #
-aioquic==0.9.23
+aioquic==0.9.24
     # via pproxy
 asyncssh==2.14.1
     # via pproxy
@@ -16,6 +16,7 @@ cffi==1.16.0
     # via cryptography
 cryptography==41.0.7
     # via
+    #   aioquic
     #   asyncssh
     #   pyopenssl
     #   service-identity
