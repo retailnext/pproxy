@@ -8,7 +8,7 @@ aioquic==0.9.24
     # via pproxy
 asyncssh==2.14.2
     # via pproxy
-attrs==23.1.0
+attrs==23.2.0
     # via service-identity
 certifi==2023.11.17
     # via aioquic
