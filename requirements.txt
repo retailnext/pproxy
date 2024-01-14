@@ -36,7 +36,7 @@ pylsqpack==0.3.18
     # via aioquic
 pyopenssl==23.3.0
     # via aioquic
-service-identity==23.1.0
+service-identity==24.1.0
     # via aioquic
 typing-extensions==4.9.0
     # via asyncssh
