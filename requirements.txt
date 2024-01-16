@@ -20,7 +20,7 @@ cryptography==41.0.7
     #   asyncssh
     #   pyopenssl
     #   service-identity
-pproxy[accelerated,quic,sshtunnel]==2.7.8
+pproxy[accelerated,quic,sshtunnel]==2.7.9
     # via -r requirements.in
 pyasn1==0.5.1
     # via
