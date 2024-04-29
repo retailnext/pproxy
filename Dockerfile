@@ -13,7 +13,7 @@ COPY requirements.txt /requirements.txt
 
 RUN /usr/local/bin/pip install --disable-pip-version-check -r /requirements.txt
 
-FROM gcr.io/distroless/python3-debian11:nonroot@sha256:a3d93f7339459aa195a77a6ff358961aba66ea2ba50d70ad452576ed63000582
+FROM gcr.io/distroless/python3-debian11:nonroot@sha256:b3f703d85f101798a15e41a35cc6b1303f472225b7d02faef24c63e4806c5587
 
 COPY --from=build /usr/local /usr/local
 
