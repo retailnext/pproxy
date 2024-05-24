@@ -38,7 +38,7 @@ pyopenssl==24.1.0
     # via aioquic
 service-identity==24.1.0
     # via aioquic
-typing-extensions==4.11.0
+typing-extensions==4.12.0
     # via asyncssh
 uvloop==0.19.0
     # via pproxy
