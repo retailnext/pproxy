@@ -14,7 +14,7 @@ certifi==2024.6.2
     # via aioquic
 cffi==1.16.0
     # via cryptography
-cryptography==42.0.7
+cryptography==42.0.8
     # via
     #   aioquic
     #   asyncssh
