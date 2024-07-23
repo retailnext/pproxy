@@ -1,4 +1,4 @@
-FROM debian:11-slim@sha256:34b63f55a4b193ad03c5ddb4b3f8546c797763ed708f0df5309ecb9507d15179 AS build
+FROM debian:11-slim@sha256:0d4827050fc382d8acc8462138244b417eaa73978f48597fe1d6741554db5689 AS build
 RUN apt-get update \
 && apt-get install --no-install-suggests --no-install-recommends --yes \
 gcc \
