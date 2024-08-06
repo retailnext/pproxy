@@ -12,7 +12,7 @@ attrs==24.2.0
     # via service-identity
 certifi==2024.7.4
     # via aioquic
-cffi==1.16.0
+cffi==1.17.0
     # via cryptography
 cryptography==43.0.0
     # via
