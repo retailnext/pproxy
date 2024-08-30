@@ -10,7 +10,7 @@ asyncssh==2.16.0
     # via pproxy
 attrs==24.2.0
     # via service-identity
-certifi==2024.7.4
+certifi==2024.8.30
     # via aioquic
 cffi==1.17.0
     # via cryptography
