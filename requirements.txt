@@ -34,11 +34,13 @@ pycryptodome==3.21.0
     # via pproxy
 pylsqpack==0.3.18
     # via aioquic
-pyopenssl==24.3.0
+pyopenssl==25.0.0
     # via aioquic
 service-identity==24.2.0
     # via aioquic
 typing-extensions==4.12.2
-    # via asyncssh
+    # via
+    #   asyncssh
+    #   pyopenssl
 uvloop==0.21.0
     # via pproxy
