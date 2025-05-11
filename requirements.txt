@@ -32,7 +32,7 @@ pycparser==2.22
     # via cffi
 pycryptodome==3.22.0
     # via pproxy
-pylsqpack==0.3.20
+pylsqpack==0.3.21
     # via aioquic
 pyopenssl==25.0.0
     # via aioquic
