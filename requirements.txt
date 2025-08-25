@@ -38,7 +38,7 @@ pyopenssl==25.1.0
     # via aioquic
 service-identity==24.2.0
     # via aioquic
-typing-extensions==4.14.1
+typing-extensions==4.15.0
     # via
     #   asyncssh
     #   pyopenssl
