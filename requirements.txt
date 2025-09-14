@@ -34,7 +34,7 @@ pycryptodome==3.23.0
     # via pproxy
 pylsqpack==0.3.22
     # via aioquic
-pyopenssl==25.1.0
+pyopenssl==25.2.0
     # via aioquic
 service-identity==24.2.0
     # via aioquic
