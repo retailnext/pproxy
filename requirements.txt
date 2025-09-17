@@ -14,7 +14,7 @@ certifi==2025.8.3
     # via aioquic
 cffi==2.0.0
     # via cryptography
-cryptography==45.0.7
+cryptography==46.0.1
     # via
     #   aioquic
     #   asyncssh
@@ -34,13 +34,14 @@ pycryptodome==3.23.0
     # via pproxy
 pylsqpack==0.3.22
     # via aioquic
-pyopenssl==25.2.0
+pyopenssl==25.3.0
     # via aioquic
 service-identity==24.2.0
     # via aioquic
 typing-extensions==4.15.0
     # via
     #   asyncssh
+    #   cryptography
     #   pyopenssl
 uvloop==0.21.0
     # via pproxy
