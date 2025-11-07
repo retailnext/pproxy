@@ -20,7 +20,7 @@ jobs:
         id: update
         run: |
           docker create --name=pip-compile \
-          --entrypoint /bin/sh \
+          --entrypoint python \
           --interactive \
           --user root \
           --workdir /tmp \
@@ -28,7 +28,7 @@ jobs:
           
           docker cp requirements.in pip-compile:/tmp/
           
-          docker start --attach --interactive pip-compile < ci/pip-compile.sh
+          docker start --attach --interactive pip-compile < ci/pip_compile.py
           
           mv requirements.txt requirements.txt.orig
           docker cp pip-compile:/tmp/requirements.txt .

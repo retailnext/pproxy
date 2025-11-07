@@ -1,4 +1,4 @@
-FROM debian:11-slim@sha256:75e0b7a6158b4cc911d4be07d9f6b8a65254eb8c58df14023c3da5c462335593 AS build
+FROM debian:12-slim@sha256:936abff852736f951dab72d91a1b6337cf04217b2a77a5eaadc7c0f2f1ec1758 AS build
 RUN apt-get update \
 && apt-get install --no-install-suggests --no-install-recommends --yes \
 gcc \
@@ -6,14 +6,13 @@ libpython3-dev \
 libssl-dev \
 python3-venv \
 && rm -rf /usr/local \
-&& python3 -m venv /usr/local \
-&& /usr/local/bin/pip install --upgrade pip setuptools wheel
+&& python3 -m venv /usr/local
 
 COPY requirements.txt /requirements.txt
 
 RUN /usr/local/bin/pip install --disable-pip-version-check -r /requirements.txt
 
-FROM gcr.io/distroless/python3-debian11:nonroot@sha256:f3331305dc14092a6df5a23733b3afc5806da8bab8089e63f441221ebcdb7cfb
+FROM gcr.io/distroless/python3-debian12:nonroot@sha256:1a7c3d2445f783c51be174c8913624dc5bea2cd7ff1f94b9a229a16f0e40fa34
 
 COPY --from=build /usr/local /usr/local
 
