@@ -5,7 +5,7 @@ import sys
 #
 # If python has been upgraded, we need to make sure it's in sync with the
 # build step and the constraint in renovate.json
-if sys.version_info.major != 3 or sys.version_info.minor != 9:
+if sys.version_info.major != 3 or sys.version_info.minor != 11:
     sys.exit(sys.version_info)
 
 # Check that pycrypto isn't broken
