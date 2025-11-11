@@ -1,13 +1,18 @@
 {
   "extends": [
-    "config:base",
+    "config:recommended",
     ":automergeAll",
     ":gitSignOff",
     ":semanticCommits",
     "docker:pinDigests"
   ],
   "platformAutomerge": true,
-  "python": {
-    "enabled": false
-  }
+  "packageRules": [
+    {
+      "matchCategories": [
+        "python"
+      ],
+      "enabled": false
+    }
+  ]
 }
