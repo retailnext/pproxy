@@ -2,7 +2,8 @@
 name: Update
 on:
   schedule:
-    - cron: '*/30 * * * *'
+    - cron: '7 */7 * * *'
+  workflow_dispatch:
 permissions:
   contents: write
   pull-requests: write
