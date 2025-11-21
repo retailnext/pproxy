@@ -63,7 +63,7 @@ jobs:
           private_key: ${{ secrets.APP_PRIVATE_KEY }}
       - name: Create Pull Request
         id: create-pull-request
-        uses: lucasew/CONTRIB-create-pull-request@b4733b9419fd47bbfa1807b15627e17cd70b5b22
+        uses: lucasew/CONTRIB-create-pull-request@122cf7516b482d0520b90117992aa3034d9890f6
         if: ${{ steps.update.outputs.commit-message }}
         with:
           token: ${{ steps.generate-token.outputs.token }}
