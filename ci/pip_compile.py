@@ -28,10 +28,12 @@ if needs_uvloop_restriction():
     # If pproxy is still 2.7.9 which is known to not work with uvloop >=0.22,
     # restrict the version of uvloop and re-generate requirements.txt.
     # See https://github.com/qwj/python-proxy/pull/202
-    import os
+    import pathlib
 
-    os.chmod("requirements.in", 0o666)
-    with open("requirements.in", "a") as requirements_in:
-        requirements_in.write("uvloop<0.22\n")
-    os.chmod("requirements.in", 0o444)
+    # Directly writing to the requirements.in file that was copied in results
+    # in a permission error, so write to a new file to append the restriction.
+    p = pathlib.Path("requirements.in")
+    p_new = pathlib.Path("requirements.in.new")
+    p_new.write_text(p.read_text() + "uvloop<0.22\n")
+    p_new.rename(p)
     subprocess.check_call(["/usr/local/bin/pip-compile", "requirements.in"])
