@@ -90,6 +90,7 @@ jobs:
           gh pr merge --auto --squash "${{ steps.create-pull-request.outputs.pull-request-number }}"
       - name: Check PR Review State
         id: review
+        if: ${{ steps.create-pull-request.outputs.pull-request-number }}
         env:
           GH_TOKEN: ${{ steps.generate-token.outputs.token }}
         run: |
