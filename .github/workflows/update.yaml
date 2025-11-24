@@ -88,15 +88,24 @@ jobs:
           GH_TOKEN: ${{ steps.generate-token.outputs.token }}
         run: |
           gh pr merge --auto --squash "${{ steps.create-pull-request.outputs.pull-request-number }}"
+      - name: Check PR Review State
+        id: review
+        env:
+          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
+        run: |
+          state=$(gh pr view "${{ steps.create-pull-request.outputs.pull-request-number }}" \
+           --json reviewDecision \
+           --jq '.reviewDecision')
+          echo "state=$state" >> "$GITHUB_OUTPUT"
       - name: Generate Token (Approver)
         id: generate-approver-token
         uses: tibdex/github-app-token@v2
-        if: ${{ steps.create-pull-request.outputs.pull-request-number }}
+        if: ${{ steps.create-pull-request.outputs.pull-request-number && steps.review.outputs.state != 'APPROVED' }}
         with:
           app_id: ${{ secrets.APPROVER_APP_ID }}
           private_key: ${{ secrets.APPROVER_APP_PRIVATE_KEY }}
       - name: Approve Pull Request
-        if: ${{ steps.create-pull-request.outputs.pull-request-number }}
+        if: ${{ steps.create-pull-request.outputs.pull-request-number && steps.review.outputs.state != 'APPROVED' }}
         run: |
           curl -L \
             -sS \
