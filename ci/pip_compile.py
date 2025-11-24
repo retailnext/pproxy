@@ -29,7 +29,9 @@ if needs_uvloop_restriction():
     # restrict the version of uvloop and re-generate requirements.txt.
     # See https://github.com/qwj/python-proxy/pull/202
     import os
-    os.chmod("requirements.in", 0o444)
+
+    os.chmod("requirements.in", 0o666)
     with open("requirements.in", "a") as requirements_in:
         requirements_in.write("uvloop<0.22\n")
+    os.chmod("requirements.in", 0o444)
     subprocess.check_call(["/usr/local/bin/pip-compile", "requirements.in"])
