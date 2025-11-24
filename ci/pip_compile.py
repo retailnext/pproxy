@@ -5,3 +5,29 @@ subprocess.check_call(["/usr/local/bin/pip", "install", "--disable-pip-version-c
 
 # Run pip-compile to generate requirements.txt
 subprocess.check_call(["/usr/local/bin/pip-compile", "requirements.in"])
+
+
+def needs_uvloop_restriction() -> bool:
+    from pkg_resources import parse_requirements
+    from packaging.version import parse as parse_version
+    pproxy_upgraded = False
+    uvloop_upgraded = False
+    with open("requirements.txt") as requirements_txt:
+        for requirement in parse_requirements(requirements_txt):
+            match requirement.name:
+                case "uvloop":
+                    uvloop_upgraded = parse_version(requirement.specs[0][1]) \
+                                      >= parse_version("0.22")
+                case "pproxy":
+                    pproxy_upgraded = parse_version(requirement.specs[0][1]) \
+                                      > parse_version("2.7.9")
+    return uvloop_upgraded and not pproxy_upgraded
+
+
+if needs_uvloop_restriction():
+    # If pproxy is still 2.7.9 which is known to not work with uvloop >=0.22,
+    # restrict the version of uvloop and re-generate requirements.txt.
+    # See https://github.com/qwj/python-proxy/pull/202
+    with open("requirements.in", "a") as requirements_in:
+        requirements_in.write("uvloop<0.22\n")
+    subprocess.check_call(["/usr/local/bin/pip-compile", "requirements.in"])
