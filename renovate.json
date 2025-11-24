@@ -4,7 +4,8 @@
     ":automergeAll",
     ":gitSignOff",
     ":semanticCommits",
-    "docker:pinDigests"
+    "docker:pinDigests",
+    "helpers:pinGitHubActionDigests"
   ],
   "platformAutomerge": true,
   "packageRules": [
