@@ -28,7 +28,7 @@ pyasn1==0.6.2
     #   service-identity
 pyasn1-modules==0.4.2
     # via service-identity
-pycparser==2.23
+pycparser==3.0
     # via cffi
 pycryptodome==3.23.0
     # via pproxy
