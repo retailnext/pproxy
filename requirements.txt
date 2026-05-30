@@ -22,12 +22,6 @@ cryptography==48.0.0
     #   service-identity
 pproxy[accelerated,quic,sshtunnel]==2.7.9
     # via -r requirements.in
-pyasn1==0.6.3
-    # via
-    #   pyasn1-modules
-    #   service-identity
-pyasn1-modules==0.4.2
-    # via service-identity
 pycparser==3.0
     # via cffi
 pycryptodome==3.23.0
@@ -36,7 +30,7 @@ pylsqpack==0.3.24
     # via aioquic
 pyopenssl==26.2.0
     # via aioquic
-service-identity==24.2.0
+service-identity==26.1.0
     # via aioquic
 typing-extensions==4.15.0
     # via
