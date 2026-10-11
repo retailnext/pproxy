@@ -4,7 +4,7 @@
 #
 #    pip-compile requirements.in
 #
-aioquic==1.4.0
+aioquic==1.5.0
     # via pproxy
 asyncssh==2.24.1
     # via pproxy
@@ -24,9 +24,9 @@ pproxy[accelerated,quic,sshtunnel]==2.7.9
     # via -r requirements.in
 pycparser==3.11
     # via cffi
-pycryptodome==3.24.0
+pycryptodome==3.24.1
     # via pproxy
-pylsqpack==0.3.24
+pylsqpack==1.0.0
     # via aioquic
 pyopenssl==26.4.0
     # via aioquic
