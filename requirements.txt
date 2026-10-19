@@ -24,7 +24,7 @@ pproxy[accelerated,quic,sshtunnel]==2.7.9
     # via -r requirements.in
 pycparser==3.11
     # via cffi
-pycryptodome==4.0.1
+pycryptodome==4.1.0
     # via pproxy
 pylsqpack==1.0.0
     # via aioquic
