@@ -6,7 +6,7 @@
 #
 aioquic==1.9.2
     # via pproxy
-asyncssh==2.24.1
+asyncssh==2.24.2
     # via pproxy
 attrs==26.1.0
     # via service-identity
